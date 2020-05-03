@@ -1,23 +1,36 @@
-<div>
+<div class="gsProject">
   <div class="questionGroup">
     <label for="randomQ" *ngIf="randomQuestion">
       {{ randomQuestion[0].question }}
     </label>
-    <input *ngIf="!answer" type="text" name="randomQ" id="randomQ" />
+    <input
+      *ngIf="!answer"
+      type="text"
+      name="randomQ"
+      id="randomQ"
+      placeholder="Type your answer here"
+      [(ngModel)]="usersAnswer"
+    />
 
     <p class="answer" *ngIf="answer">The answer is: {{ answer }}</p>
 
-    <button (click)="showAnswer()">Show me the answer after 5 sec</button>
+    <button (click)="validateAnswer()">Send my answer</button>
 
-    <button (click)="newQuestion()">I need a new question</button>
+    <button (click)="showAnswer()">Show me the answer after 5 sec</button>
   </div>
 
   <div class="categoryGroup">
     <label for="category">If you want select question category:</label>
-    <select name="category" id="category" [(ngModel)]="selectedCategoryId">
-      <option *ngFor="let category of categories" value="{{ category.id }}">
-        {{ category.title }}
-      </option>
-    </select>
+
+    <ng-select2
+      name="category"
+      [data]="categoriesS2"
+      [placeholder]="'Please choose category'"
+      [width]="'100%'"
+      [(ngModel)]="selectedCategoryId"
+    >
+    </ng-select2>
+
+    <button (click)="newQuestion()">I need a new question</button>
   </div>
 </div>

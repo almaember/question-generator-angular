@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { JserviceService } from "src/app/services/jservice/jservice.service";
+import { Select2OptionData } from "ng-select2";
 
 @Component({
   selector: "app-questions",
@@ -9,8 +10,11 @@ import { JserviceService } from "src/app/services/jservice/jservice.service";
 export class QuestionsComponent implements OnInit {
   randomQuestion: Array<any>;
   answer: string;
-  categories: Array<any>;
+  answerForValidation: string;
+  categoriesS2: Array<Select2OptionData>;
   selectedCategoryId: string;
+  answerTimer;
+  usersAnswer: string;
 
   constructor(public jService: JserviceService) {}
 
@@ -20,10 +24,12 @@ export class QuestionsComponent implements OnInit {
   }
 
   newQuestion() {
+    this.clearShowAnswerTimer();
+
     if (!this.selectedCategoryId) {
       this.jService.getRandomQuestion().subscribe((randomQuestion) => {
         this.randomQuestion = randomQuestion;
-        this.answer = "";
+        this.answerHandler();
       });
     } else if (this.selectedCategoryId) {
       this.jService
@@ -32,21 +38,41 @@ export class QuestionsComponent implements OnInit {
           let ArrLength = questionByCategory.length;
           let randomNum = Math.floor(Math.random() * ArrLength);
           this.randomQuestion = [questionByCategory[randomNum]];
-          this.answer = "";
-          console.log(this.randomQuestion);
+          this.answerHandler();
         });
     }
   }
 
+  answerHandler() {
+    this.answerForValidation = this.randomQuestion[0].answer;
+    this.answer = "";
+  }
+
   showAnswer() {
-    setTimeout(() => {
+    this.answerTimer = setTimeout(() => {
       this.answer = this.randomQuestion[0].answer;
     }, 5000);
   }
 
+  clearShowAnswerTimer() {
+    clearTimeout(this.answerTimer);
+  }
+
   listCategories() {
-    this.jService.getCategories().subscribe((categories) => {
-      this.categories = categories;
+    this.jService.getCategories().subscribe((c) => {
+      this.categoriesS2 = c.map((c) => {
+        return { id: c.id, text: c.title };
+      });
     });
+  }
+
+  validateAnswer() {
+    if (this.usersAnswer === this.answerForValidation) {
+      console.log("A válasz helyes");
+    } else {
+      console.log("A válasz helytelen");
+      console.log(this.usersAnswer);
+      console.log(this.answerForValidation);
+    }
   }
 }

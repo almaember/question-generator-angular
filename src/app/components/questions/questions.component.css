@@ -14,3 +14,7 @@
 .answer {
   color: #008000;
 }
+
+.gsProject button {
+  cursor: pointer;
+}
