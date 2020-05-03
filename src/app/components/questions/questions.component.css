@@ -1,0 +1,16 @@
+.categoryGroup,
+.questionGroup {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.categoryGroup {
+  margin-top: 3rem;
+}
+
+.answer {
+  color: #008000;
+}

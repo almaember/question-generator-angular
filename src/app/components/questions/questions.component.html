@@ -1,0 +1,23 @@
+<div>
+  <div class="questionGroup">
+    <label for="randomQ" *ngIf="randomQuestion">
+      {{ randomQuestion[0].question }}
+    </label>
+    <input *ngIf="!answer" type="text" name="randomQ" id="randomQ" />
+
+    <p class="answer" *ngIf="answer">The answer is: {{ answer }}</p>
+
+    <button (click)="showAnswer()">Show me the answer after 5 sec</button>
+
+    <button (click)="newQuestion()">I need a new question</button>
+  </div>
+
+  <div class="categoryGroup">
+    <label for="category">If you want select question category:</label>
+    <select name="category" id="category" [(ngModel)]="selectedCategoryId">
+      <option *ngFor="let category of categories" value="{{ category.id }}">
+        {{ category.title }}
+      </option>
+    </select>
+  </div>
+</div>
