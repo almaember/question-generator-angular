@@ -18,3 +18,11 @@
 .gsProject button {
   cursor: pointer;
 }
+
+.goodAnswer {
+  background-color: #008000;
+}
+
+.badAnswer {
+  background-color: #ff0000;
+}

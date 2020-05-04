@@ -8,13 +8,15 @@ import { Select2OptionData } from "ng-select2";
   styleUrls: ["./questions.component.css"],
 })
 export class QuestionsComponent implements OnInit {
-  randomQuestion: Array<any>;
   answer: string;
   answerForValidation: string;
-  categoriesS2: Array<Select2OptionData>;
-  selectedCategoryId: string;
   answerTimer;
+  categoriesS2: Array<Select2OptionData>;
   usersAnswer: string;
+  selectedCategoryId: string;
+  randomQuestion: Array<any>;
+  validationText: string;
+  answerIsValid: boolean;
 
   constructor(public jService: JserviceService) {}
 
@@ -45,7 +47,9 @@ export class QuestionsComponent implements OnInit {
 
   answerHandler() {
     this.answerForValidation = this.randomQuestion[0].answer;
+    this.usersAnswer = "";
     this.answer = "";
+    this.answerIsValid = null;
   }
 
   showAnswer() {
@@ -67,12 +71,20 @@ export class QuestionsComponent implements OnInit {
   }
 
   validateAnswer() {
-    if (this.usersAnswer === this.answerForValidation) {
-      console.log("A válasz helyes");
+    console.log(this.answerForValidation);
+    if (this.usersAnswer) {
+      let result: boolean =
+        this.answerForValidation
+          .toLowerCase()
+          .localeCompare(this.usersAnswer.toLowerCase()) === 0;
+      result
+        ? ((this.answerIsValid = true),
+          (this.validationText = "Your answer is correct"))
+        : ((this.answerIsValid = false),
+          (this.validationText = "Your answer is incorrect"));
     } else {
-      console.log("A válasz helytelen");
-      console.log(this.usersAnswer);
-      console.log(this.answerForValidation);
+      this.answerIsValid = undefined;
+      this.validationText = "Please answer the question";
     }
   }
 }

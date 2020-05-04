@@ -10,13 +10,33 @@
       id="randomQ"
       placeholder="Type your answer here"
       [(ngModel)]="usersAnswer"
+      [disabled]="answerIsValid ? true : false"
     />
+    <ng-container *ngIf="!answer">
+      <p
+        [className]="answerIsValid ? 'goodAnswer' : 'badAnswer'"
+        *ngIf="
+          answerIsValid === true ||
+          answerIsValid === false ||
+          answerIsValid === undefined
+        "
+      >
+        {{ validationText }}
+      </p>
+    </ng-container>
 
     <p class="answer" *ngIf="answer">The answer is: {{ answer }}</p>
 
-    <button (click)="validateAnswer()">Send my answer</button>
+    <button
+      *ngIf="!answer && answerIsValid !== true"
+      (click)="validateAnswer()"
+    >
+      Check my answer
+    </button>
 
-    <button (click)="showAnswer()">Show me the answer after 5 sec</button>
+    <button *ngIf="!answer && answerIsValid !== true" (click)="showAnswer()">
+      Show me the answer after 5 sec
+    </button>
   </div>
 
   <div class="categoryGroup">
