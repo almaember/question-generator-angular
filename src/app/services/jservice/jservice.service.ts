@@ -23,9 +23,24 @@ export class JserviceService {
     return this.httpClient.get(`${this.url}${this.categories}`, options);
   }
 
-  getQuestionByCategory(questionId: string): Observable<any> {
-    let httpParams = new HttpParams().set("category", `${questionId}`);
+  getQuestionByCategory(categoryId: string): Observable<any> {
+    let httpParams = new HttpParams().set("category", `${categoryId}`);
     let options = { params: httpParams };
+    return this.httpClient.get(`${this.url}${this.clues}`, options);
+  }
+
+  getQuestionsByFilterOptions(
+    categoryId?: string,
+    value?: number
+  ): Observable<any> {
+    let httpParams = new HttpParams().set("category", `${categoryId}`);
+
+    if (value !== undefined) {
+      httpParams = httpParams.append("value", `${value}`);
+    }
+
+    let options = { params: httpParams };
+
     return this.httpClient.get(`${this.url}${this.clues}`, options);
   }
 }

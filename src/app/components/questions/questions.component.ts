@@ -17,6 +17,11 @@ export class QuestionsComponent implements OnInit {
   randomQuestion: Array<any>;
   validationText: string;
   answerIsValid: boolean;
+  questionsToList: Array<any>;
+  filterObj = {
+    categoryId: undefined,
+    value: undefined,
+  };
 
   constructor(public jService: JserviceService) {}
 
@@ -31,6 +36,7 @@ export class QuestionsComponent implements OnInit {
     if (!this.selectedCategoryId) {
       this.jService.getRandomQuestion().subscribe((randomQuestion) => {
         this.randomQuestion = randomQuestion;
+        console.log(this.randomQuestion);
         this.answerHandler();
       });
     } else if (this.selectedCategoryId) {
@@ -40,9 +46,15 @@ export class QuestionsComponent implements OnInit {
           let ArrLength = questionByCategory.length;
           let randomNum = Math.floor(Math.random() * ArrLength);
           this.randomQuestion = [questionByCategory[randomNum]];
+          console.log(this.randomQuestion);
           this.answerHandler();
         });
     }
+  }
+
+  newQuestionWithFilter(question) {
+    this.randomQuestion = [question];
+    alert("Question successfully selected!");
   }
 
   answerHandler() {
@@ -55,7 +67,7 @@ export class QuestionsComponent implements OnInit {
   showAnswer() {
     this.answerTimer = setTimeout(() => {
       this.answer = this.randomQuestion[0].answer;
-    }, 5000);
+    }, 2000);
   }
 
   clearShowAnswerTimer() {
@@ -86,5 +98,18 @@ export class QuestionsComponent implements OnInit {
       this.answerIsValid = undefined;
       this.validationText = "Please answer the question";
     }
+  }
+
+  listQuestions() {
+    console.log(this.filterObj);
+    this.jService
+      .getQuestionsByFilterOptions(
+        this.filterObj.categoryId,
+        this.filterObj.value
+      )
+      .subscribe((q) => {
+        console.log(q);
+        this.questionsToList = q;
+      });
   }
 }

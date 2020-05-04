@@ -1,14 +1,12 @@
 .categoryGroup,
-.questionGroup {
+.questionGroup,
+.filterGroup {
   display: flex;
   flex-direction: column;
   width: 50%;
   margin-left: auto;
   margin-right: auto;
-}
-
-.categoryGroup {
-  margin-top: 3rem;
+  margin-bottom: 3rem;
 }
 
 .answer {
@@ -20,9 +18,39 @@
 }
 
 .goodAnswer {
-  background-color: #008000;
+  background-color: #28a745;
 }
 
 .badAnswer {
-  background-color: #ff0000;
+  background-color: #dc3545;
+}
+
+button,
+input,
+p {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.3rem;
+  border-width: 0.05rem;
+  border-style: solid;
+  border-color: #aaaaaa;
+  border-radius: 0.1rem;
+  margin-bottom: 0.5rem;
+}
+
+button {
+  background-color: #007bff;
+  color: #f8f9fa;
+}
+
+.filterGroup button {
+  background-color: #6c757d;
+}
+
+p {
+  color: #f8f9fa;
+}
+
+span {
+  margin-bottom: 0.5rem;
 }

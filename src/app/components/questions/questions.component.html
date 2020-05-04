@@ -1,7 +1,19 @@
 <div class="gsProject">
   <div class="questionGroup">
+    <h1>Trivia quiz app by Gergely Tóth</h1>
+
+    <button (click)="newQuestion()">Next question</button>
+
+    <span *ngIf="randomQuestion">
+      <strong>Category: </strong>{{ randomQuestion[0].category.title }}
+    </span>
+
+    <span *ngIf="randomQuestion">
+      <strong>Value: </strong>{{ randomQuestion[0].value }}
+    </span>
+
     <label for="randomQ" *ngIf="randomQuestion">
-      {{ randomQuestion[0].question }}
+      <strong>Question: </strong>{{ randomQuestion[0].question }}
     </label>
     <input
       *ngIf="!answer"
@@ -12,6 +24,7 @@
       [(ngModel)]="usersAnswer"
       [disabled]="answerIsValid ? true : false"
     />
+
     <ng-container *ngIf="!answer">
       <p
         [className]="answerIsValid ? 'goodAnswer' : 'badAnswer'"
@@ -35,11 +48,12 @@
     </button>
 
     <button *ngIf="!answer && answerIsValid !== true" (click)="showAnswer()">
-      Show me the answer after 5 sec
+      Show me the answer after 2 sec
     </button>
   </div>
 
   <div class="categoryGroup">
+    <h2>Select questions by category</h2>
     <label for="category">If you want select question category:</label>
 
     <ng-select2
@@ -50,7 +64,46 @@
       [(ngModel)]="selectedCategoryId"
     >
     </ng-select2>
+  </div>
 
-    <button (click)="newQuestion()">I need a new question</button>
+  <div class="filterGroup">
+    <h2>Find a question</h2>
+
+    <label for="byCategory">By category</label>
+    <ng-select2
+      name="byCategory"
+      [data]="categoriesS2"
+      [placeholder]="'Please choose category'"
+      [width]="'100%'"
+      [(ngModel)]="filterObj.categoryId"
+    >
+    </ng-select2>
+    <label for="byValue">By value</label>
+    <input
+      type="number"
+      name="byValue"
+      id="byValue"
+      [(ngModel)]="filterObj.value"
+    />
+    <button (click)="listQuestions()">List all</button>
+    <ng-container *ngIf="questionsToList">
+      <table>
+        <thead>
+          <tr>
+            <th>Question</th>
+            <th>Category</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let q of questionsToList">
+            <td>{{ q.question }}</td>
+            <td>{{ q.category.title }}</td>
+            <td>{{ q.value }}</td>
+            <td><button (click)="newQuestionWithFilter(q)">Select</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
   </div>
 </div>
